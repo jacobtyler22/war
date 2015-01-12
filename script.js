@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 	//what does this do?
+	//returns the value as a string. if value is 11, 12, or 13, it makes it Jack, Queen, or King.
 	var convert_value_to_string = function(value) {
 		if (value > 10) {
 			switch (value) {
@@ -19,6 +20,7 @@ $(document).ready(function() {
 	}
 
 	//what does this do?
+	//adds objects to the deck class which each have a number and suit key which are defined in the loop.
 	var deck = [];
 	var suits = ['hearts', 'diamonds', 'spades', 'clubs'];
 	for (var i = 0; i<suits.length; i++) {
@@ -29,6 +31,8 @@ $(document).ready(function() {
 	}
 	
 	//what does this do?
+	//creates an empty copy array, loops through all values in the array backwards, creates a random number and adds that index of array into copy and
+	//removes it from array so it doesn't use it again, randomizing the indexes of array.
 	var shuffle = function(array) { 
 		var copy = [];
 		var n = array.length; 
@@ -44,16 +48,23 @@ $(document).ready(function() {
 	}
 	
 	//Now call the shuffle function and save the result of what shuffle returns into your deck variable
-	
+	deck = shuffle(deck);
 	var cards_player_1 = [];
 	var cards_player_2 = [];
 	// write a function called deal that will evently divide the deck up between the two players
-	
+	for(var i = 0; i < deck.length; i++){
+		if(i % 2 === 0){
+			cards_player_1.push(deck[i]);
+		} else {
+			cards_player_2.push(deck[i]);
+		}
+	}
 	
 	//create a function (algorithm) called "war" that takes two cards as parameters, compares them and returns a winner. A tie should return false.
-	var war = function(){
-	
-		
+	var war = function(cardOne, cardTwo){
+		if(cardOne.number > cardTwo.number)return cardOne;
+		else if(cardTwo.number > cardOne.number)return cardTwo;
+		else return false;	
 	}
 	
 	var advance = function(){
@@ -74,8 +85,20 @@ $(document).ready(function() {
 		//compare the cards
 		//give the winner both cards (at end of deck)
 	var play = function(){
-		
-		//this function (defined below) will continue to the next turn
+		var winner = false;
+		winner = war(cards_player_1[0], cards_player_2[0]);
+		if(winner === cards_player_1[0]){
+			cards_player_1.push(cards_player_1.shift(),cards_player_2.shift());
+		} else if(winner === cards_player_2[0]){
+			cards_player_2.push(cards_player_1.shift(),cards_player_2.shift());
+		} else {
+			winner = war(cards_player_1[3], cards_player_2[3]);
+			if(winner === cards_player_1[3]){
+			cards_player_1.push(cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift());
+			} else if(winner === cards_player_2[3]){
+			cards_player_1.push(cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift(),cards_player_1.shift(),cards_player_2.shift());
+			}
+		}
 		advance();
 	}
 	
